@@ -1,0 +1,14 @@
+*.swp
+*.pyx
+__cache__*
+
+terraform.tfvars
+.terraform*
+*.tfstate*
+
+state.json
+.terraform
+log/
+
+cloud-key.pub
+cloud-key
