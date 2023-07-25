@@ -50,7 +50,7 @@ def go(cmd,ip,name="<name>",mute=0):
     cmd=cmd.format(ip)
     if mute == 0:
         print(cmd)
-    print(cmd)
+    #print(cmd)
     r=os.popen(cmd)
     if mute == 0:
         print("--",r)
@@ -69,8 +69,8 @@ for line in data:
     cmd='ssh-keygen -f "/home/micha/.ssh/known_hosts" -R "{}"'
     go(cmd,ip,mute=0)
 
-    print("sleep 10s")
-    time.sleep(10)
+print("sleep 10s")
+time.sleep(10)
 
 
 for line in data:

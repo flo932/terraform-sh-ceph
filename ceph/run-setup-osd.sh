@@ -79,7 +79,21 @@ ceph auth add osd.$node osd 'allow *' mon 'allow rwx' -i /var/lib/ceph/osd/ceph-
 ceph osd pool create $node-pool 3
 #rbd create myBLock -p x --size 1024
 
+#ceph osd crush add osd.0 1.0 root=default datacenter=dc1 room=room1 row=foo rack=bar host=foo-bar-1
+ceph osd crush add osd.$oid 1.0 root=default datacenter=dc1 room=room1 row=foo rack=bar host=foo-bar-1
+# ceph osd crush remove 
+
 ceph osd tree
 ceph osd stat
 
+ceph health detail
+ceph df
+ceph osd df
 
+#ceph -w | grep osds  #like dmesg -w
+ 
+systemctl stop ceph-osd@$node
+systemctl start ceph-osd@$node
+systemctl enable ceph-osd@$node
+
+#https://docs.ceph.com/en/latest/install/manual-deployment/

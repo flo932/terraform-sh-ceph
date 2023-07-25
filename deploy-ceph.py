@@ -144,7 +144,13 @@ for i in range(len(data)):
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
     go(cmd,ip,name)
 
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mds.sh \''
+    go(cmd,ip,name)
+
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
+    go(cmd,ip,name)
+
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-dash.sh \''
     go(cmd,ip,name)
 
     # exctract conf
@@ -190,8 +196,20 @@ for i in range(len(data)):
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
     go(cmd,ip,name)
 
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mds.sh \''
+    go(cmd,ip,name)
+
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
     go(cmd,ip,name)
 
+for i in range(len(data)):
+    name = data_name[i]
+    ip = data[i]
+    print([name,ip])
+
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-fs.sh \''
+    go(cmd,ip,name)
+
+    break
 
 print("duration:" , round(time.time()-START,2),"sec")
