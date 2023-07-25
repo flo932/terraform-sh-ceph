@@ -12,3 +12,5 @@ log/
 
 cloud-key.pub
 cloud-key
+ssh-key
+ssh-key.pub
