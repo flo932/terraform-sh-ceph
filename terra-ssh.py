@@ -12,6 +12,9 @@ cmd="grep 'ip\|name' hz/state.json"
 print(cmd)
 r = os.popen(cmd)
 
+import lib.terra as terra
+SSH = terra.SSH 
+
 data = []
 for line in r:
     line = line.strip()
@@ -24,17 +27,8 @@ for line in r:
         data.append(ip)
         print("time:",round(time.time()-start,2))       
 
-SSH = ' ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i hz/ssh-key  root@{} '
 def go(cmd,ip,name="<name>",mute=0):
-    print(os.getcwd())
-    cmd=cmd.format(ip)
-    if mute == 0:
-        print(cmd)
-    r=os.popen(cmd)
-    if mute == 0:
-        print("--",r)
-        for line in r:
-            print(line.strip())
+    terra.ssh_exe(cmd,ip,name,mute)
 
 print()
 import sys

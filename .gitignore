@@ -1,6 +1,9 @@
 *.swp
 *.pyx
+*.pyc
 __cache__*
+__cache__
+__pycache__
 
 terraform.tfvars
 .terraform*

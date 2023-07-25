@@ -28,40 +28,14 @@ cmd="grep 'ip\|name' ../hz/state.json"
 print(cmd)
 r = os.popen(cmd)
 
+import lib.terra as terra
+SSH = terra.SSH
 
+data, data_name = terra.get_state()
 
-SSH = 'ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i "../hz/ssh-key"  root@{} '
 def go(cmd,ip,name="<name>",mute=0):
-    print(os.getcwd())
-    cmd=cmd.format(ip)
-    if mute == 0:
-        print(cmd)
-    r=os.popen(cmd)
-    if mute == 0:
-        print("--",r)
-        for line in r:
-            print(line.strip())
+    terra.ssh_exe(cmd,ip,name,mute)
 
-data = []
-data_name = []
-name = "xxx"
-ip = 0
-for line in r:
-    line = line.strip()
-    #print(line)
-    if "ipv4_address" in line:
-        ip = line.split()[1]
-        ip = ip.replace(",","").replace('"','')
-        print(ip)
-        data.append(ip)
-        name = ""
-
-    if name == "" and "name" in line:
-        name = line
-        name = line.split()[1]
-        name = name.replace(",","").replace('"','')
-        print(name)
-        data_name.append(name)
 
 import uuid
 fsid=str(uuid.uuid4())
@@ -167,6 +141,12 @@ for i in range(len(data)):
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mon.sh \''
     go(cmd,ip,name)
 
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
+    go(cmd,ip,name)
+
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
+    go(cmd,ip,name)
+
     # exctract conf
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-get.sh -- > '+SUB+'/get-{}.log\''.format(name)
     go(cmd,ip,name)
@@ -207,9 +187,11 @@ for i in range(len(data)):
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mon.sh \''
     go(cmd,ip,name)
 
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
     go(cmd,ip,name)
 
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
+    go(cmd,ip,name)
 
 
 print("duration:" , round(time.time()-START,2),"sec")
