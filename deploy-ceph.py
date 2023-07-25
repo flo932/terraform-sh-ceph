@@ -20,22 +20,27 @@ os.chdir(SUB)
 
 cmd="cd ../hz; terraform state pull > ../hz/state.json"
 print(cmd)
-os.system(cmd)
+r = os.system(cmd)
+print(r)
 
 start = time.time()
 cmd="grep 'ip\|name' ../hz/state.json"
 print(cmd)
 r = os.popen(cmd)
 
-OPTION = ' -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i ../hz/ssh-key ' 
-SSH = ' ssh '+OPTION+' root@{} '
 
-def go(cmd,ip,name="<host>"):
-    print()
+
+SSH = 'ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i "../hz/ssh-key"  root@{} '
+def go(cmd,ip,name="<name>",mute=0):
+    print(os.getcwd())
     cmd=cmd.format(ip)
-    print(cmd.replace(OPTION,"<"+name+">"))
-    r=os.system(cmd)
-    #print("--",r)
+    if mute == 0:
+        print(cmd)
+    r=os.popen(cmd)
+    if mute == 0:
+        print("--",r)
+        for line in r:
+            print(line.strip())
 
 data = []
 data_name = []
@@ -114,6 +119,7 @@ for i in range(len(data)):
     print(txt)
     
 
+    os.system("mkdir -p ./log/")
     fn = "./log/host-{}.conf".format(name)
     f = open(fn,"w")
     f.write(txt)

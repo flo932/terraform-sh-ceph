@@ -15,8 +15,8 @@ provider "hcloud" {
 
 # Create a new SSH key
 resource "hcloud_ssh_key" "default" {
-  name       = "ssh-key"
-  public_key = file("./ssh-key.pub")
+  name       = "ssh-key-A"
+  public_key = file("ssh-key.pub")
 }
 
 # -----------------------------------------
@@ -48,7 +48,7 @@ resource "hcloud_network_subnet" "public" {
 # Create a server ---------------------------------
 resource "hcloud_server" "c-1" {
   name        = "ceph0"
-  ssh_keys   = ["ssh-key"]
+  ssh_keys   = ["ssh-key-A"]
   location   = "fsn1"
   image       = "debian-11"
   #image       = "installimage"
@@ -82,7 +82,7 @@ resource "hcloud_volume" "storage-1" {
 # Create a server ---------------------------------
 resource "hcloud_server" "c-2" {
   name        = "ceph1"
-  ssh_keys   = ["ssh-key"]
+  ssh_keys   = ["ssh-key-A"]
   location   = "fsn1"
   image       = "debian-11"
   #image       = "installimage"
@@ -116,7 +116,7 @@ resource "hcloud_volume" "storage-2" {
 # Create a server ---------------------------------
 resource "hcloud_server" "c-3" {
   name        = "ceph2"
-  ssh_keys   = ["ssh-key"]
+  ssh_keys   = ["ssh-key-A"]
   location   = "fsn1"
   image       = "debian-11"
   #image       = "installimage"

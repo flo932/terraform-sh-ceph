@@ -26,6 +26,7 @@ for line in r:
 
 SSH = ' ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i hz/ssh-key  root@{} '
 def go(cmd,ip,name="<name>",mute=0):
+    print(os.getcwd())
     cmd=cmd.format(ip)
     if mute == 0:
         print(cmd)
@@ -34,7 +35,6 @@ def go(cmd,ip,name="<name>",mute=0):
         print("--",r)
         for line in r:
             print(line.strip())
-
 
 print()
 import sys
