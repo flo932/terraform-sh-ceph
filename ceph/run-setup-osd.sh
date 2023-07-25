@@ -70,25 +70,16 @@ oid=$(ceph osd create $uuid)
 echo "OID: $oid"
 #ceph-osd -i $oid --mkfs --mkkey
 
-sudo chown ceph:ceph -r /var/lib/osd
+sudo chown -R ceph:ceph /var/lib/ceph/osd
+
 ceph-osd -i $oid --mkfs --mkkey  --osd-data /var/lib/ceph/osd/ceph-$node/ --monmap /tmp/monmap --no-mon-config
 
-ceph auth add osd.3 osd 'allow *' mon 'allow rwx' -i /var/lib/ceph/osd/ceph-$node/keyring
-ceph osd pool create x 3
+ceph auth add osd.$node osd 'allow *' mon 'allow rwx' -i /var/lib/ceph/osd/ceph-$node/keyring
+
+ceph osd pool create $node-pool 3
 #rbd create myBLock -p x --size 1024
 
 ceph osd tree
 ceph osd stat
-
-exit
-
-#https://docs.ceph.com/en/latest/rados/operations/add-or-rm-osds/
-
-
-umount /dev/sdb
-#echo 'type=83' | sudo sfdisk /dev/sdb
-wipefs /dev/sdb -a
-cfdisk /dev/sdb
-blkid
 
 
