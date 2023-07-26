@@ -11,7 +11,10 @@ mkdir -p /var/lib/ceph/mgr/ceph-$node/
 cp /tmp/ceph.keyring /var/lib/ceph/mgr/ceph-$node/keyring
 chown -R ceph:ceph /var/lib/ceph/mgr/
 
-ceph auth get-or-create mgr.$node mon 'allow profile mgr' osd 'allow *' mds 'allow *' | tee  /var/lib/ceph/mgr/ceph-$node/keyring
+#ceph auth get-or-create mgr.$node mon 'allow profile mgr' osd 'allow *' mds 'allow *' | tee  
+#cp /tmp/ceph.mgr.keyring /var/lib/ceph/mgr/ceph-$node/keyring
+#cp /tmp/ceph.keyring /var/lib/ceph/mgr/ceph-$node/keyring
+ceph auth get-or-create mgr.$node mon 'allow profile mgr' osd 'allow *' mds 'allow *' -i /tmp/ceph.keyring  
 
 
 chown ceph:ceph /var/lib/ceph/mgr/

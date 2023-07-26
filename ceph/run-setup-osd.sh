@@ -72,9 +72,12 @@ echo "OID: $oid"
 
 sudo chown -R ceph:ceph /var/lib/ceph/osd
 
+echo "--mkfs"
 ceph-osd -i $oid --mkfs --mkkey  --osd-data /var/lib/ceph/osd/ceph-$node/ --monmap /tmp/monmap --no-mon-config
 
-ceph auth add osd.$node osd 'allow *' mon 'allow rwx' -i /var/lib/ceph/osd/ceph-$node/keyring
+#ceph auth add osd.$node osd 'allow *' mon 'allow rwx' -i /var/lib/ceph/osd/ceph-$node/keyring
+cp /tmp/ceph.osd.keyring  /var/lib/ceph/osd/ceph-$node/keyring
+cp /tmp/ceph.keyring  /var/lib/ceph/osd/ceph-$node/keyring
 
 ceph osd pool create $node-pool 3
 #rbd create myBLock -p x --size 1024
@@ -88,7 +91,7 @@ ceph osd stat
 
 ceph health detail
 ceph df
-ceph osd df
+#ceph osd df
 
 #ceph -w | grep osds  #like dmesg -w
  
