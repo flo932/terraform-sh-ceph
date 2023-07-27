@@ -19,20 +19,22 @@ SUB="ceph"
 os.chdir(SUB)
 
 cmd="cd ../hz; terraform state pull > ../hz/state.json"
-cmd="cd ../hz-min; terraform state pull > ../hz-min/state.json"
+#cmd="cd ../hz-min; terraform state pull > ../hz-min/state.json"
 print(cmd)
 r = os.system(cmd)
 print(r)
 
 start = time.time()
-cmd="grep 'ip\|name' ../hz-min/state.json"
+cmd="grep 'ip\|name' ../hz/state.json"
+#cmd="grep 'ip\|name' ../hz-min/state.json"
 print(cmd)
 r = os.popen(cmd)
 
 import lib.terra as terra
 SSH = terra.SSH
 
-data, data_name = terra.get_state(path="hz-min")
+data, data_name = terra.get_state(path="hz")
+#data, data_name = terra.get_state(path="hz-min")
 
 def go(cmd,ip,name="<name>",mute=0):
     terra.ssh_exe(cmd,ip,name,mute)
@@ -142,14 +144,15 @@ for i in range(len(data)):
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mon.sh \''
     go(cmd,ip,name)
 
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
-    go(cmd,ip,name)
-
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mds.sh \''
     go(cmd,ip,name)
 
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
     go(cmd,ip,name)
+
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
+    go(cmd,ip,name)
+
 
     #cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-dash.sh \''
     #go(cmd,ip,name)
@@ -194,14 +197,15 @@ for i in range(len(data)):
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mon.sh \''
     go(cmd,ip,name)
 
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
+    go(cmd,ip,name)
+
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
     go(cmd,ip,name)
 
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mds.sh \''
     go(cmd,ip,name)
 
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
-    go(cmd,ip,name)
 
 for i in range(len(data)):
     name = data_name[i]

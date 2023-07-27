@@ -39,4 +39,6 @@ mkdir -p /mnt/cephfs
 echo "ceph-fuse -d --id bootstrap-osd -k /tmp/ceph.keyring -m 10.0.1.5:6789 /mnt/cephfs/ &"
 #ceph-fuse --id bootstrap-osd -k /tmp/ceph.keyring -m 10.0.1.5:6789 /mnt/cephfs/ 
 
-ceph-fuse -d --id admin -k /tmp/ceph.keyring -m 10.0.1.5:6789 /mnt/cephfs/ --no-mon-config
+#ceph-fuse -d --id admin -k /tmp/ceph.keyring -m 10.0.1.5:6789 /mnt/cephfs/ --no-mon-config
+ceph-fuse --id admin -n client.admin -k /tmp/ceph.keyring -m 10.0.1.2:6789 /mnt/cephfs/ --no-mon-config
+

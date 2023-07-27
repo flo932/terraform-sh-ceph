@@ -15,7 +15,9 @@ import time
 import lib.terra as terra
 SSH = terra.SSH 
 
-data, data_name = terra.get_state(path="hz-min")
+#data, data_name = terra.get_state(path="hz-min")
+data, data_name = terra.get_state(path="hz")
+
 
 def go(cmd,ip,name="<name>",mute=0):
     terra.ssh_exe(cmd,ip,name,mute)
