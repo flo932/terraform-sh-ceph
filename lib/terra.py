@@ -4,10 +4,13 @@ import os
 import time
 import sys
 
-def get_state():
+def get_state(path="hz"):
 
     start = time.time()
-    cmd="grep 'ip\|name' ../hz/state.json"
+    p = "../"+path+"/state.json"
+    if not os.path.isfile(p):
+        p = "./"+path+"/state.json"
+    cmd="grep 'ip\|name' "+p
     print(cmd)
     r = os.popen(cmd)
 
@@ -34,12 +37,16 @@ def get_state():
     return data,data_name
 
 
-
 SSH = ' ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes"   root@{} '
 if os.path.isfile("hz/ssh-key"):
     SSH = ' ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i hz/ssh-key  root@{} '
 elif os.path.isfile("../hz/ssh-key"):
     SSH = 'ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i "../hz/ssh-key"  root@{} '
+
+elif os.path.isfile("hz-min/ssh-key"):
+    SSH = 'ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i "hz-min/ssh-key"  root@{} '
+elif os.path.isfile("../hz-min/ssh-key"):
+    SSH = 'ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i "../hz-min/ssh-key"  root@{} '
 
 
 def ssh_exe(cmd,ip,name="<name>",mute=0):

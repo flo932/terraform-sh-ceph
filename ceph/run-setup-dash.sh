@@ -4,7 +4,7 @@
 
 # https://docs.ceph.com/en/quincy/mgr/dashboard/#enabling
 
-apt install ceph-mgr-dashboard
+apt install -y ceph-mgr-dashboard
 # ceph dashboard create-self-signed-cer
 
 ceph mgr module enable dashboard

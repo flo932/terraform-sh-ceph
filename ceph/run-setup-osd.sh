@@ -1,3 +1,5 @@
+#https://docs.ceph.com/en/latest/install/manual-deployment/
+
 
 . ./ceph/host.conf
 
@@ -50,7 +52,7 @@ fi
 
 echo
 echo "UUID: $uuid"
-echo 
+echo
 
 
 if [ "$uuid" = "" ];
@@ -61,42 +63,35 @@ else
    echo ""
 fi
 
-sudo mkdir /var/lib/ceph/osd/ceph-$node
-sudo yes | mkfs -t ext4 /dev/sdb1
-sudo mount -o user_xattr /dev/sdb1 /var/lib/ceph/osd/ceph-$node/
+#sudo mkdir /var/lib/ceph/osd/ceph-$node
+#sudo yes | mkfs -t ext4 /dev/sdb1
+#sudo mount -o user_xattr /dev/sdb1 /var/lib/ceph/osd/ceph-$node/
 
-cp /tmp/ceph.keyring  /var/lib/ceph/osd/ceph-$node/keyring
-oid=$(ceph osd create $uuid)
-echo "OID: $oid"
-#ceph-osd -i $oid --mkfs --mkkey
 
-sudo chown -R ceph:ceph /var/lib/ceph/osd
 
-echo "--mkfs"
-ceph-osd -i $oid --mkfs --mkkey  --osd-data /var/lib/ceph/osd/ceph-$node/ --monmap /tmp/monmap --no-mon-config
 
-#ceph auth add osd.$node osd 'allow *' mon 'allow rwx' -i /var/lib/ceph/osd/ceph-$node/keyring
-cp /tmp/ceph.osd.keyring  /var/lib/ceph/osd/ceph-$node/keyring
-cp /tmp/ceph.keyring  /var/lib/ceph/osd/ceph-$node/keyring
 
-ceph osd pool create $node-pool 3
-#rbd create myBLock -p x --size 1024
+UUID=$(uuidgen)
 
-#ceph osd crush add osd.0 1.0 root=default datacenter=dc1 room=room1 row=foo rack=bar host=foo-bar-1
-ceph osd crush add osd.$oid 1.0 root=default datacenter=dc1 room=room1 row=foo rack=bar host=foo-bar-1
-# ceph osd crush remove 
+OSD_SECRET=$(ceph-authtool --gen-print-key)
 
-ceph osd tree
-ceph osd stat
+ID=$(echo "{\"cephx_secret\": \"$OSD_SECRET\"}" |  ceph osd new $UUID -i - -n osd. -k /tmp/ceph.keyring)
 
-ceph health detail
-ceph df
-#ceph osd df
+mkdir /var/lib/ceph/osd/ceph-$ID
+mount /dev/sdb1 /var/lib/ceph/osd/ceph-$ID
 
-#ceph -w | grep osds  #like dmesg -w
- 
-systemctl stop ceph-osd@$node
-systemctl start ceph-osd@$node
-systemctl enable ceph-osd@$node
+ceph-authtool --create-keyring /var/lib/ceph/osd/ceph-$ID/keyring --name osd.$ID --add-key $OSD_SECRET
 
-#https://docs.ceph.com/en/latest/install/manual-deployment/
+
+ceph-osd -i $ID --mkfs --osd-uuid $UUID
+
+chown -R ceph:ceph /var/lib/ceph/osd/ceph-$ID
+
+systemctl enable ceph-osd@$ID
+systemctl start ceph-osd@$ID
+
+sleep 2
+
+systemctl status ceph-osd@$ID
+
+

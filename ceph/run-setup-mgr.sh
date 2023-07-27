@@ -1,27 +1,57 @@
 
 
+. ./ceph/host.conf
+ceph -s
+
+#ceph auth get-or-create mgr.$node mon 'allow profile mgr' osd 'allow *' mds 'allow *'
+#ceph-mgr -i $node --no-mon-config
+
+cat /tmp/ceph.keyfile
+
+#ceph-mgr -i $node --no-mon-config --setuser ceph --setgroup ceph  -f  -k /tmp/ceph.keyring 
+#ceph-mgr -i mgr.$node --no-mon-config --setuser ceph --setgroup ceph  -f  -k /tmp/ceph.keyring 
+#ceph-mgr -i mgr. --no-mon-config --setuser ceph --setgroup ceph  -f  -k /tmp/ceph.keyring 
+ceph-mgr -i mgr.node0 -n client.admin --no-mon-config --setuser ceph --setgroup ceph -k /tmp/ceph.keyring
+
+
+sleep 1
+ps aux | grep -v grep | grep ceph
+
+
+exit 
+
+
+
+
+
+
+
+
+
+
 
 . ./ceph/host.conf
 
 
-echo "configuring manager"
-rm -rf /var/lib/ceph/mgr/*
+mkdir -p /var/lib/ceph/mds/ceph-$node
 
-mkdir -p /var/lib/ceph/mgr/ceph-$node/
-cp /tmp/ceph.keyring /var/lib/ceph/mgr/ceph-$node/keyring
-chown -R ceph:ceph /var/lib/ceph/mgr/
-
-#ceph auth get-or-create mgr.$node mon 'allow profile mgr' osd 'allow *' mds 'allow *' | tee  
-#cp /tmp/ceph.mgr.keyring /var/lib/ceph/mgr/ceph-$node/keyring
-#cp /tmp/ceph.keyring /var/lib/ceph/mgr/ceph-$node/keyring
-ceph auth get-or-create mgr.$node mon 'allow profile mgr' osd 'allow *' mds 'allow *' -i /tmp/ceph.keyring  
+ceph-authtool --create-keyring /var/lib/ceph/mds/ceph-$node/keyring --gen-key -n mds.$node
 
 
-chown ceph:ceph /var/lib/ceph/mgr/
+ceph auth add mds.$node osd "allow rwx" mds "allow *" mon "allow profile mds" -i /var/lib/ceph/mds/ceph-$node/keyring
 
-ceph-mgr -i $node --no-mon-config
-#ceph-mgr -i $node --no-mon-config -d
-sleep 1
 
-ceph -s
+echo
+ceph-mds --cluster ceph -i $node -m 10.0.1.5 --no-mon-config
+
+systemctl start ceph-mds@$node 
+sleep 2
+systemctl status ceph-mds@$node 
+
+
+sleep 2
+echo
+ps aux | grep -v grep | grep ceph 
+
+
 
