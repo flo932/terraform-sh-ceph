@@ -79,10 +79,6 @@ else
    echo ""
 fi
 
-#sudo mkdir /var/lib/ceph/osd/ceph-$node
-#sudo yes | mkfs -t ext4 /dev/sdb1
-#sudo mount -o user_xattr /dev/sdb1 /var/lib/ceph/osd/ceph-$node/
-
 
 UUID=$(uuidgen)
 

@@ -15,7 +15,8 @@ rm -rf /var/lib/ceph/mon/*
 #touch /tmp/ceph.keyring
 sudo -u ceph mkdir /var/lib/ceph/mon/ceph-$node
 sudo -u ceph ceph-mon --mkfs -i $node --monmap /tmp/monmap --keyring /tmp/ceph.keyring
-cp /tmp/ceph.keyring /var/lib/ceph/mon/ceph-$node/keyring
+#cp /tmp/ceph.keyring /var/lib/ceph/mon/ceph-$node/keyring
+cp /tmp/ceph.mon.keyring /var/lib/ceph/mon/ceph-$node/keyring
 
 chown -R ceph:ceph /var/lib/ceph/mon/ceph-$node/
 

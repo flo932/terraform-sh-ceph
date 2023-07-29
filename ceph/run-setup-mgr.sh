@@ -17,6 +17,9 @@ ceph-mgr -i mgr.node0 -n client.admin --no-mon-config --setuser ceph --setgroup 
 sleep 1
 ps aux | grep -v grep | grep ceph
 
+systemctl start ceph-mgr@$node 
+sleep 2
+systemctl status ceph-mgr@$node 
 
 exit 
 

@@ -11,11 +11,12 @@ rm -rf /var/lib/ceph/mds/ceph-$node
 mkdir -p /var/lib/ceph/mds/ceph-$node
 
 #cp /tmp/ceph.keyring /var/lib/ceph/mds/ceph-$node/keyring
-ceph-authtool --create-keyring /var/lib/ceph/mds/ceph-$node/keyring --gen-key -n mds.$node
+cp /tmp/ceph.mds.$node.keyring /var/lib/ceph/mds/ceph-$node/keyring
+#ceph-authtool --create-keyring /var/lib/ceph/mds/ceph-$node/keyring --gen-key -n mds.$node
 
 #ceph auth add mds.$node osd "allow rwx" mds "allow *" mon "allow profile mds" -i /var/lib/ceph/mds/ceph-$node/keyring
 #ceph auth add mds. osd "allow rwx" mds "allow *" mon "allow profile mds" -i /var/lib/ceph/mds/ceph-$node/keyring
-ceph auth add mds.$node osd "allow rwx" mds "allow *" mon "allow profile mds" -i /var/lib/ceph/mds/ceph-$node/keyring
+#ceph auth add mds.$node osd "allow rwx" mds "allow *" mon "allow profile mds" -i /var/lib/ceph/mds/ceph-$node/keyring
 
 chown -R ceph:ceph /var/lib/ceph/mds/*
 

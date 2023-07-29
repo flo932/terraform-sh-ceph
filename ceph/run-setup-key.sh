@@ -34,7 +34,7 @@ for i in $(echo $nodes | tr "," "\n")
 do
     echo "gen mds KEY i1 $i $j "
     sudo ceph-authtool --create-keyring /tmp/ceph.mds.$i.keyring --gen-key -n mds.$i --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
-    sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.mon.$i.keyring
+    sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.mds.$i.keyring
     j=$((j+1))
 done
 

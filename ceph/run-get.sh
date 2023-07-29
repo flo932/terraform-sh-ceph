@@ -12,29 +12,26 @@ echo "#########################"
 
 #----------- show config's on screen to copy !
 
-fn="/tmp/ceph.client.admin.keyring"
-echo "rm -rf $fn"
-echo "cat <<EOF > $fn"
-cat $fn
-echo "EOF"
-echo "cp $fn /etc/ceph/"
-echo
+j=0
+LS=$(ls /tmp/ | grep ceph.*.keyring )
+for i in $(echo $LS | tr " " "\n")
+do
+    fn="/tmp/$i"
+    echo "cat <<EOF > $fn "
+    cat $fn
+    echo "EOF"
+    echo
+    #echo "------------get $i $j "
+    j=$((j+1))
+done
 
-fn="/tmp/ceph.keyring"
-echo "cat <<EOF > $fn "
-cat $fn
-echo "EOF"
-echo
-
-fn="/tmp/ceph.mon.keyring"
-echo "rm -rf $fn"
-echo "cat <<EOF > $fn"
-cat $fn
-echo "EOF"
-echo 
 
 fn="/tmp/monmap"
 echo "rm -rf $fn"
 R=$(cat $fn | base64)
 echo "echo '$R' | base64 -d > $fn"
 echo
+
+
+
+
