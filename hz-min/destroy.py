@@ -17,15 +17,8 @@ if not os.path.isfile("ssh-key"):
 
 
 
-cmd="terraform apply -auto-approve "
-print(cmd)
-os.system(cmd)
 
-# reinit ssh
-import os
-import time
-
-cmd="cd hz; terraform state pull > state.json"
+cmd="cd ../hz-min; terraform state pull > state.json"
 cmd=" terraform state pull > state.json"
 print(cmd)
 os.system(cmd)
@@ -48,17 +41,6 @@ for line in r:
         data.append(ip)
         print("time:",round(time.time()-start,2))       
 
-SSH = ' ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i hz/ssh-key  root@{} '
-SSH = ' ssh -o StrictHostKeyChecking=no -o "IdentitiesOnly=yes" -i ssh-key  root@{} '
-def go(cmd,ip,name="<name>",mute=0):
-    cmd=cmd.format(ip)
-    if mute == 0:
-        print(cmd)
-    r=os.popen(cmd)
-    if mute == 0:
-        print("--",r)
-        for line in r:
-            print(line.strip())
 
 print()
 print("cleanup local ssh-keys")
@@ -69,8 +51,8 @@ for line in data:
     ip = line
     print(sys.argv)
 
-    cmd='ssh-keygen -f "/home/micha/.ssh/known_hosts" -R "{}"'
-    go(cmd,ip,mute=1)
+    cmd='ssh-keygen -f "/home/micha/.ssh/known_hosts" -R "{}"'.format(ip)
+    os.system(cmd)
 
 
 

@@ -11,7 +11,6 @@ rm -rf /tmp/monmap
 echo "kill all ceph"
 ps aux | grep ceph | grep -v run- | grep -v grep |  sed 's/[ ][ ]*/ /g' | cut -f 2 -d " " | xargs -i -t kill {}
 
-
 echo "genkey ------------------"
 #sudo ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *'
 
@@ -23,11 +22,21 @@ sudo ceph-authtool --create-keyring /tmp/ceph.client.admin.keyring --gen-key -n 
 
 #ceph auth add osd.$node osd 'allow *' mon 'allow rwx' -i /tmp/ceph.osd.keyring
 
+touch /tmp/ceph.keyring
 
 sudo ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
 sudo ceph-authtool --create-keyring /tmp/ceph.osd.keyring --gen-key -n osd. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
 sudo ceph-authtool --create-keyring /tmp/ceph.mgr.keyring --gen-key -n mgr. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
 sudo ceph-authtool --create-keyring /tmp/ceph.mds.keyring --gen-key -n mds. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
+
+j=0
+for i in $(echo $nodes | tr "," "\n")
+do
+    echo "gen mds KEY i1 $i $j "
+    sudo ceph-authtool --create-keyring /tmp/ceph.mds.$i.keyring --gen-key -n mds.$i --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
+    sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.mon.$i.keyring
+    j=$((j+1))
+done
 
 
 cp /tmp/ceph.client.admin.keyring /etc/ceph/ceph.client.admin.keyring
@@ -36,7 +45,6 @@ cp /tmp/ceph.bootstrap-osd.keyring /var/lib/ceph/bootstrap-osd/ceph.keyring
 
 monmaptool --create --add $node $ip --fsid $fsid /tmp/monmap #--clobber
 
-touch /tmp/ceph.keyring
 
 sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.mon.keyring
 sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.mgr.keyring
@@ -47,6 +55,9 @@ sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.bootstrap-osd.ke
 
 
 sudo chown ceph:ceph /tmp/ceph*keyring
+
+echo "pause"
+read
 
 j=1
 for i in $(echo $ips | tr "," "\n")

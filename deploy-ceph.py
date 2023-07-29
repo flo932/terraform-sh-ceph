@@ -18,23 +18,10 @@ SUB="ceph"
 
 os.chdir(SUB)
 
-cmd="cd ../hz; terraform state pull > ../hz/state.json"
-#cmd="cd ../hz-min; terraform state pull > ../hz-min/state.json"
-print(cmd)
-r = os.system(cmd)
-print(r)
-
-start = time.time()
-cmd="grep 'ip\|name' ../hz/state.json"
-#cmd="grep 'ip\|name' ../hz-min/state.json"
-print(cmd)
-r = os.popen(cmd)
-
 import lib.terra as terra
 SSH = terra.SSH
 
-data, data_name = terra.get_state(path="hz")
-#data, data_name = terra.get_state(path="hz-min")
+data, data_name = terra.get_state()
 
 def go(cmd,ip,name="<name>",mute=0):
     terra.ssh_exe(cmd,ip,name,mute)
@@ -126,8 +113,13 @@ for i in range(len(data)):
     ip = data[i]
     print([name,ip])
 
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-apt.sh \''
-    go(cmd,ip,name)
+    #cmd=SSH+' -- \'sh /root/'+SUB+'/run-kill.sh \''
+    #go(cmd,ip,name)
+
+    #cmd=SSH+' -- \'sh /root/'+SUB+'/run-apt.sh \''
+    #go(cmd,ip,name)
+
+
 
 print( "# run initial setup and extraction on primary-node")
 for i in range(len(data)):
@@ -135,25 +127,8 @@ for i in range(len(data)):
     ip = data[i]
     print([name,ip])
 
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-conf-single.sh \''
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-first.sh \''
     go(cmd,ip,name)
-
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-key.sh \''
-    go(cmd,ip,name)
-
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mon.sh \''
-    go(cmd,ip,name)
-
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mds.sh \''
-    go(cmd,ip,name)
-
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
-    go(cmd,ip,name)
-
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
-    go(cmd,ip,name)
-
-
     #cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-dash.sh \''
     #go(cmd,ip,name)
 
@@ -178,8 +153,8 @@ for i in range(len(data)):
     ip = data[i]
     print([name,ip])
 
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-conf.sh \''
-    go(cmd,ip,name)
+    #cmd=SSH+' -- \'sh /root/'+SUB+'/run-conf.sh \''
+    #go(cmd,ip,name)
 
     if first:
         src = name
@@ -187,34 +162,21 @@ for i in range(len(data)):
         # not on first host
         continue
 
-
     # copy primary config and key's -> :to second nodes as set.sh
     cmd='dd if=./log/get-{}.log | '.format(src) + SSH + ' -- \'dd of=./'+SUB+'/set.sh\''
     go(cmd,ip,name)
-    cmd=SSH + ' -- \'sh /root/'+SUB+'/set.sh\''
-    go(cmd,ip,name)
 
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mon.sh \''
-    go(cmd,ip,name)
-
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-osd.sh \''
-    go(cmd,ip,name)
-
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mgr.sh \''
-    go(cmd,ip,name)
-
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-mds.sh \''
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-sec.sh \''
     go(cmd,ip,name)
 
 
+# run injection
 for i in range(len(data)):
     name = data_name[i]
     ip = data[i]
     print([name,ip])
 
-    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-fs.sh \''
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-fin.sh \''
     go(cmd,ip,name)
-
-    break
 
 print("duration:" , round(time.time()-START,2),"sec")
