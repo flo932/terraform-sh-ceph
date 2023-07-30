@@ -10,7 +10,7 @@ are deployed with python3 to the VM's
 
 Processes are: ceph-mon, ceph-osd, ceph-mgr, ceph-crush
 
-i run in some none starting processes witout any error messages
+problems: processes mon,osd,mgr does not start or exit fast witout any error messages
 solution: chmod,chown of keyring in /var/lib/ceph/[mon,osd,mgr]/keyring
 ```
 
@@ -29,13 +29,13 @@ cd ..
 ```
 
 
-## first deploy VM's with terraform
+## second deploy bash-scripts to VM's 
 ```
-# cd into terraform subdir hz or ht-min
-cd hz
-terraform init # one a time
-python3 deploy.py
-cd ..
+python3 deploy-ceph.py
+
+# check ceph-cluster
+python3 terra-ssh.py 'ceph -s' # timeout ?
+python3 terra-ssh 'ceph/run-ps.sh'
 ```
 
 ---
