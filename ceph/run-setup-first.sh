@@ -18,3 +18,7 @@ chmod +x ~/ceph/run-*.sh
 ~/ceph/run-setup-mon.sh 
 ~/ceph/run-setup-mds.sh 
 
+echo "disable global_id"
+ceph config set mon mon_warn_on_insecure_global_id_reclaim false
+ceph config set mon mon_warn_on_insecure_global_id_reclaim_allowed false
+

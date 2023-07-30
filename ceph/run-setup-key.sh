@@ -24,6 +24,7 @@ sudo ceph-authtool --create-keyring /tmp/ceph.client.admin.keyring --gen-key -n 
 
 touch /tmp/ceph.keyring
 
+# TODO  all users have all rights not secure ... TODO reduce the right's for users mon,osd,mgr!
 sudo ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
 sudo ceph-authtool --create-keyring /tmp/ceph.osd.keyring --gen-key -n osd. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
 #sudo ceph-authtool --create-keyring /tmp/ceph.mgr.keyring --gen-key -n mgr. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'

@@ -8,7 +8,6 @@ fs="ceph"
 id=1
 
 #create fs
-ceph osd pool create ${fs}_rds $id
 ceph osd pool create ${fs}_fs_data $id
 ceph osd pool create ${fs}_fs_metadata $id
 ceph fs new ${fs}fs ${fs}_fs_metadata ${fs}_fs_data
@@ -25,7 +24,6 @@ echo "ceph mds stat"
 echo "stat /sbin/mount.ceph"
 
 
-echo "rbd pool init ${fs}_rds"
 
 
 cp -va /tmp/ceph.keyring  /etc/ceph/ceph.client.foo.keyring
