@@ -179,4 +179,13 @@ for i in range(len(data)):
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-fin.sh \''
     go(cmd,ip,name)
 
+# run injection
+for i in range(len(data)):
+    name = data_name[i]
+    ip = data[i]
+    print([name,ip])
+
+    cmd=SSH+' -- \'sh /root/'+SUB+'/run-ps.sh \''
+    go(cmd,ip,name)
+
 print("duration:" , round(time.time()-START,2),"sec")

@@ -11,10 +11,23 @@ cat /tmp/ceph.keyfile
 #ceph-mgr -i $node --no-mon-config --setuser ceph --setgroup ceph  -f  -k /tmp/ceph.keyring 
 #ceph-mgr -i mgr.$node --no-mon-config --setuser ceph --setgroup ceph  -f  -k /tmp/ceph.keyring 
 #ceph-mgr -i mgr. --no-mon-config --setuser ceph --setgroup ceph  -f  -k /tmp/ceph.keyring 
-ceph-mgr -i mgr.node0 -n client.admin --no-mon-config --setuser ceph --setgroup ceph -k /tmp/ceph.keyring
+#ceph-mgr -i mgr.node0 -n client.admin --no-mon-config --setuser ceph --setgroup ceph -k /tmp/ceph.keyring
 
+rm -rfv /var/lib/ceph/mgr/ceph-$node
 
-sleep 1
+mkdir -pv /var/lib/ceph/mgr/ceph-$node/
+
+cp -va /tmp/ceph.mgr.$node.keyring /var/lib/ceph/mgr/ceph-$node/keyring
+chown -R ceph:ceph /var/lib/ceph/mgr/ceph-$node
+chmod -R 644 /var/lib/ceph/mgr/ceph-$node/
+chmod +x /var/lib/ceph/mgr/ceph-$node
+
+#sleep 1
+echo "# start by hand"
+echo "/usr/bin/ceph-mgr  -i mgr.$node  -n mgr.$node --setuser ceph --setgroup ceph -d  --no-mon-config  #--keyring /tmp/ceph.keyring"
+echo 
+
+#sleep 1
 ps aux | grep -v grep | grep ceph
 
 systemctl start ceph-mgr@$node 

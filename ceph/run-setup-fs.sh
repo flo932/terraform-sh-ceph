@@ -28,7 +28,7 @@ echo "stat /sbin/mount.ceph"
 echo "rbd pool init ${fs}_rds"
 
 
-cp /tmp/ceph.keyring  /etc/ceph/ceph.client.foo.keyring
+cp -va /tmp/ceph.keyring  /etc/ceph/ceph.client.foo.keyring
 
 # mount  cephfs kernel 
 #mount -t ceph cephuser@.cephfs=/ -o secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==

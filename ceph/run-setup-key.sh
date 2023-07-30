@@ -26,7 +26,7 @@ touch /tmp/ceph.keyring
 
 sudo ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
 sudo ceph-authtool --create-keyring /tmp/ceph.osd.keyring --gen-key -n osd. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
-sudo ceph-authtool --create-keyring /tmp/ceph.mgr.keyring --gen-key -n mgr. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
+#sudo ceph-authtool --create-keyring /tmp/ceph.mgr.keyring --gen-key -n mgr. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
 sudo ceph-authtool --create-keyring /tmp/ceph.mds.keyring --gen-key -n mds. --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
 
 j=0
@@ -35,12 +35,15 @@ do
     echo "gen mds KEY i1 $i $j "
     sudo ceph-authtool --create-keyring /tmp/ceph.mds.$i.keyring --gen-key -n mds.$i --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
     sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.mds.$i.keyring
+
+    sudo ceph-authtool --create-keyring /tmp/ceph.mgr.$i.keyring --gen-key -n mgr.$i --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
+    sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.mgr.$i.keyring
     j=$((j+1))
 done
 
 
-cp /tmp/ceph.client.admin.keyring /etc/ceph/ceph.client.admin.keyring
-cp /tmp/ceph.bootstrap-osd.keyring /var/lib/ceph/bootstrap-osd/ceph.keyring
+cp -va /tmp/ceph.client.admin.keyring /etc/ceph/ceph.client.admin.keyring
+cp -va /tmp/ceph.bootstrap-osd.keyring /var/lib/ceph/bootstrap-osd/ceph.keyring
 
 
 monmaptool --create --add $node $ip --fsid $fsid /tmp/monmap #--clobber
@@ -54,7 +57,7 @@ sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.client.admin.key
 sudo ceph-authtool /tmp/ceph.keyring --import-keyring /tmp/ceph.bootstrap-osd.keyring
 
 
-sudo chown ceph:ceph /tmp/ceph*keyring
+chown ceph:ceph /tmp/ceph.*
 
 echo "pause"
 read

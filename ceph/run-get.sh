@@ -11,7 +11,10 @@ echo "# conf from $ip   #######"
 echo "#########################"
 
 #----------- show config's on screen to copy !
+echo "rm -rf /tmp/ceph.*"
+echo "rm -rf /tmp/monmap"
 
+echo
 j=0
 LS=$(ls /tmp/ | grep ceph.*.keyring )
 for i in $(echo $LS | tr " " "\n")
@@ -24,6 +27,7 @@ do
     #echo "------------get $i $j "
     j=$((j+1))
 done
+echo
 
 
 fn="/tmp/monmap"
@@ -33,5 +37,14 @@ echo "echo '$R' | base64 -d > $fn"
 echo
 
 
+echo
+cp -va /tmp/ceph.client.admin.keyring /etc/ceph/ceph.client.admin.keyring
+cp -va /tmp/ceph.bootstrap-osd.keyring /var/lib/ceph/bootstrap-osd/ceph.keyring
+echo "cp -va /tmp/ceph.client.admin.keyring /etc/ceph/ceph.client.admin.keyring"
+echo "cp -va /tmp/ceph.bootstrap-osd.keyring /var/lib/ceph/bootstrap-osd/ceph.keyring"
+
+echo
+chown -R ceph:ceph /tmp/ceph.* 
+echo "chown -R ceph:ceph /tmp/ceph.* "
 
 
