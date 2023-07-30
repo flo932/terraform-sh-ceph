@@ -33,7 +33,8 @@ python3 deploy.py
 cd ..
 ```
 
-***
+---
+---
 
 
 # Explain 
@@ -49,11 +50,8 @@ cd ..
 ## check the nodes with
 ```
 python3 terra-ssh.py 'md5sum /tmp/*'
-python3 terra-ssh.py 'ps aux | grep ceph'
 python3 terra-ssh.py 'source ./host.conf; echo $node'
+python3 terra-ssh 'ceph/run-ps.sh'
 python3 terra-ssh.py 'ceph -s' # timeout ?
 ```
 
-## check if all run's
-python3 terra-ssh 'ceph -s'
-python3 terra-ssh 'ceph/run-ps.sh'
