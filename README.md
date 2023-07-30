@@ -43,7 +43,7 @@ cd ..
 ## python3 deploy.py
 - subdir ceph/run-* -> ssh -> vm
 - apt install ceph 
-- exec config in vm
+- generate CEPH config+key in first-vm
 - copy config from first node to other nodes
 - run ceph-mon@$node
 
