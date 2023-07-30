@@ -7,6 +7,11 @@ and deploy a ceph 3-Node cluster with bash script's
 
 terraform and bash scripts 
 are deployed with python3 to the VM's
+
+Processes are: ceph-mon, ceph-osd, ceph-mgr, ceph-crush
+
+i run in some none starting processes witout any error messages
+solution: chmod,chown of keyring in /var/lib/ceph/[mon,osd,mgr]/keyring
 ```
 
 ## first deploy VM's with terraform
@@ -16,7 +21,7 @@ cd hz
 
 # set hcloud_token , terraform.tfvars (option)
 
-terraform init # one a time
+terraform init # one time
 
 # create ssh-keys and deploy terraform
 python3 deploy.py
