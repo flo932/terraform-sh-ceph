@@ -47,7 +47,7 @@ resource "hcloud_network_subnet" "public" {
 
 # Create a server ---------------------------------
 resource "hcloud_server" "c-1" {
-  name        = "ceph0"
+  name        = "ceph1"
   ssh_keys   = ["ssh-key-A"]
   location   = "fsn1"
   image       = "debian-11"
@@ -68,7 +68,7 @@ resource "hcloud_server_network" "srvnetwork1-2" {
 
 # Create a volume
 resource "hcloud_volume" "storage-1" {
-  name       = "ceph-disk"
+  name       = "ceph-disk-1"
   size       = 11
   server_id  = "${hcloud_server.c-1.id}"
   automount  = true
@@ -81,7 +81,7 @@ resource "hcloud_volume" "storage-1" {
 
 # Create a server ---------------------------------
 resource "hcloud_server" "c-2" {
-  name        = "ceph1"
+  name        = "ceph2"
   ssh_keys   = ["ssh-key-A"]
   location   = "fsn1"
   image       = "debian-11"
@@ -102,7 +102,7 @@ resource "hcloud_server_network" "srvnetwork2-2" {
 
 # Create a volume
 resource "hcloud_volume" "storage-2" {
-  name       = "my-volume-2"
+  name       = "ceph-disk-2"
   size       = 11
   server_id  = "${hcloud_server.c-2.id}"
   automount  = true
@@ -115,7 +115,7 @@ resource "hcloud_volume" "storage-2" {
 
 # Create a server ---------------------------------
 resource "hcloud_server" "c-3" {
-  name        = "ceph2"
+  name        = "ceph3"
   ssh_keys   = ["ssh-key-A"]
   location   = "fsn1"
   image       = "debian-11"
@@ -135,7 +135,7 @@ resource "hcloud_server_network" "srvnetwork3-2" {
 
 # Create a volume
 resource "hcloud_volume" "storage-3" {
-  name       = "my-volume-3"
+  name       = "ceph-disk-3"
   size       = 31
   server_id  = "${hcloud_server.c-3.id}"
   automount  = true
