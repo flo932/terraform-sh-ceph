@@ -74,6 +74,14 @@ resource "hcloud_volume" "storage-1" {
   automount  = true
   format     = "ext4"
 }
+# Create a volume
+resource "hcloud_volume" "storage-1b" {
+  name       = "ceph-disk-1b"
+  size       = 11
+  server_id  = "${hcloud_server.c-1.id}"
+  automount  = true
+  format     = "ext4"
+}
 
 
 
@@ -108,6 +116,14 @@ resource "hcloud_volume" "storage-2" {
   automount  = true
   format     = "ext4"
 }
+# Create a volume
+resource "hcloud_volume" "storage-2b" {
+  name       = "ceph-disk-2b"
+  size       = 11
+  server_id  = "${hcloud_server.c-2.id}"
+  automount  = true
+  format     = "ext4"
+}
 
 
 
@@ -136,6 +152,14 @@ resource "hcloud_server_network" "srvnetwork3-2" {
 # Create a volume
 resource "hcloud_volume" "storage-3" {
   name       = "ceph-disk-3"
+  size       = 31
+  server_id  = "${hcloud_server.c-3.id}"
+  automount  = true
+  format     = "ext4"
+}
+# Create a volume
+resource "hcloud_volume" "storage-3b" {
+  name       = "ceph-disk-3b"
   size       = 31
   server_id  = "${hcloud_server.c-3.id}"
   automount  = true
