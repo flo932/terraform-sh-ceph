@@ -1,14 +1,30 @@
 
-## test repo to create a 3 node ceph cluster in HETZNER-CLOUD
+## Deploy 3-node ceph cluster in HETZNER-CLOUD
 ```
 Hi.
 With this repo I learn how to use Terraform on Hetzner-Cloud
 and deploy a ceph 3-Node cluster with bash script's
 
-deployed with python 
+terraform and bash scripts 
+are deployed with python3 to the VM's
 ```
 
-## first with terraform
+## first deploy VM's with terraform
+```
+# cd into terraform subdir hz or hz-min
+cd hz
+
+# set hcloud_token , terraform.tfvars (option)
+
+terraform init # one a time
+
+# create ssh-keys and deploy terraform
+python3 deploy.py
+cd ..
+```
+
+
+## first deploy VM's with terraform
 ```
 # cd into terraform subdir hz or ht-min
 cd hz
@@ -17,8 +33,10 @@ python3 deploy.py
 cd ..
 ```
 
+***
 
-# Info what deployment does on the VM'S
+
+# Explain 
 - deploy the node's 
 
 ## python3 deploy.py
