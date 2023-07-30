@@ -1,5 +1,9 @@
 
 
+# 2022 GPL v2 only  
+# - flo932@uxsrv.de micha.r
+
+
 FSID=$(cat /etc/ceph/ceph.conf | grep fsid | cut -f 4 -d " " )
 echo "FSID '$FSID'"
 echo 

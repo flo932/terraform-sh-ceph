@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 
+# 2022 GPL v2 only  
+# - flo932@uxsrv.de micha.r
+
+
 . ./ceph/host.conf
 
 # transver into cloud.vm

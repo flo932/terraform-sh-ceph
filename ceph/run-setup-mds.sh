@@ -1,4 +1,8 @@
 
+# 2022 GPL v2 only  
+# - flo932@uxsrv.de micha.r
+
+
 . ./ceph/host.conf
 
 

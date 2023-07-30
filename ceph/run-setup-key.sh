@@ -1,4 +1,8 @@
 
+# 2022 GPL v2 only  
+# - flo932@uxsrv.de micha.r
+
+
 echo "clenaup tmp ------------------"
 node=abc0
 ip=10.0.1.5

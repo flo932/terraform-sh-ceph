@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # 2022 GPL v2 only  
-# - micha@uxsrv.de M.Rathfelder
+# - flo932@uxsrv.de micha.r
 
 import time
 

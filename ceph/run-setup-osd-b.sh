@@ -1,5 +1,9 @@
 #https://docs.ceph.com/en/latest/install/manual-deployment/
 
+# 2022 GPL v2 only  
+# - flo932@uxsrv.de micha.r
+
+
 
 . ./ceph/host.conf
 
