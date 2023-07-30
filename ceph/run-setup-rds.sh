@@ -27,3 +27,6 @@ sudo mount /dev/rbd/rbdpool/disk1 /mnt/ceph-block-device
 
 #fstab
 #rbdpool/disk1           id=admin,keyring=/etc/ceph/ceph.client.admin.keyring
+
+
+sudo systemctl start rbdmap

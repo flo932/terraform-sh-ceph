@@ -136,7 +136,7 @@ resource "hcloud_server_network" "srvnetwork3-2" {
 # Create a volume
 resource "hcloud_volume" "storage-3" {
   name       = "my-volume-3"
-  size       = 11
+  size       = 31
   server_id  = "${hcloud_server.c-3.id}"
   automount  = true
   format     = "ext4"
