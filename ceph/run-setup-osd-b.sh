@@ -90,6 +90,12 @@ OSD_SECRET=$(ceph-authtool --gen-print-key)
 
 ID=$(echo "{\"cephx_secret\": \"$OSD_SECRET\"}" |  ceph osd new $UUID -i - -n osd. -k /tmp/ceph.keyring)
 
+if [ "x" = "x$ID" ]; then
+    echo "EXIT: NO OSD-ID !"
+    exit 1
+fi
+
+
 echo "re-create /var/lib/ceph/osd/ceph-$ID"
 rm -rf /var/lib/ceph/osd/ceph-$ID
 mkdir /var/lib/ceph/osd/ceph-$ID

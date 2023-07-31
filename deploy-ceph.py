@@ -179,6 +179,7 @@ for i in range(len(data)):
     cmd=SSH+' -- \'sh /root/'+SUB+'/run-setup-fin.sh \''
     go(cmd,ip,name)
 
+time.sleep(1)
 # run injection
 for i in range(len(data)):
     name = data_name[i]

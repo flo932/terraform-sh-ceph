@@ -24,6 +24,8 @@ if [ "x$FSID" = "x$xFSID" ]; then
     mount -o user_xattr $DISK /var/lib/ceph/osd/ceph-$ID
     
     screen -m -d -S osd-$ID /usr/bin/ceph-osd -f --id $ID --setuser ceph --setgroup ceph -d
+    #sleep 1
+    #systemctl start ceph-osd@$ID
 else
     echo "no"
 fi
@@ -48,6 +50,8 @@ if [ "x$FSID" = "x$xFSID" ]; then
     mount -o user_xattr $DISK /var/lib/ceph/osd/ceph-$ID
     
     screen -m -d -S osd-$ID /usr/bin/ceph-osd -f --id $ID --setuser ceph --setgroup ceph -d
+    #sleep 1
+    #systemctl start ceph-osd@$ID
 else
     echo "no"
 fi

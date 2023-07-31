@@ -34,6 +34,7 @@ echo
 #sleep 1
 ps aux | grep -v grep | grep ceph
 
+systemctl enable ceph-mgr@$node 
 systemctl start ceph-mgr@$node 
 sleep 2
 systemctl status ceph-mgr@$node 
